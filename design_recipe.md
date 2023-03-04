@@ -132,6 +132,13 @@ albums.first.title # => 'Superstar'
 albums.first.release_year # => '2011'
 albuma.first.aertist_id # => '1'
 
+#2
+#Get all alcums when there are no albums in the DB
+
+repo = AlbumRepository.new
+albums = repo.all
+
+```
 
 Encode this example as a test.
 
