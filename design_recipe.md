@@ -48,12 +48,12 @@ Usually, the Model class name will be the capitalised table name (single instead
 
 # Model class
 # (in lib/albums.rb)
-class Student
+class Album
 end
 
 # Repository class
 # (in lib/student_repository.rb)
-class StudentRepository
+class AlbumRepository
 end
 ```
 
@@ -71,7 +71,7 @@ Define the attributes of your Model class. You can usually map the table columns
 class Student
 
   # Replace the attributes by your own columns.
-  attr_accessor :id, :name, :cohort_name
+  attr_accessor :id, :title, :release_year, :artist_id
 end
 
 # The keyword attr_accessor is a special Ruby feature
@@ -93,41 +93,22 @@ Using comments, define the method signatures (arguments and return value) and wh
 
 ```ruby
 # EXAMPLE
-# Table name: students
+# Table name: albums
 
 # Repository class
 # (in lib/student_repository.rb)
 
-class StudentRepository
+class AlbumRepository
 
   # Selecting all records
   # No arguments
   def all
     # Executes the SQL query:
-    # SELECT id, name, cohort_name FROM students;
+    # SELECT id, title, release_year, artist_id FROM albums;
 
-    # Returns an array of Student objects.
+    # Returns an array of Album objects.
   end
 
-  # Gets a single record by its ID
-  # One argument: the id (number)
-  def find(id)
-    # Executes the SQL query:
-    # SELECT id, name, cohort_name FROM students WHERE id = $1;
-
-    # Returns a single Student object.
-  end
-
-  # Add more methods below for each operation you'd like to implement.
-
-  # def create(student)
-  # end
-
-  # def update(student)
-  # end
-
-  # def delete(student)
-  # end
 end
 ```
 
@@ -141,35 +122,16 @@ These examples will later be encoded as RSpec tests.
 # EXAMPLES
 
 # 1
-# Get all students
+# Get all albums
 
-repo = StudentRepository.new
+repo = AlbumRepository.new
+albums = repo.all
 
-students = repo.all
+albums.length # =>  2
+albums.first.title # => 'Superstar'
+albums.first.release_year # => '2011'
+albuma.first.aertist_id # => '1'
 
-students.length # =>  2
-
-students[0].id # =>  1
-students[0].name # =>  'David'
-students[0].cohort_name # =>  'April 2022'
-
-students[1].id # =>  2
-students[1].name # =>  'Anna'
-students[1].cohort_name # =>  'May 2022'
-
-# 2
-# Get a single student
-
-repo = StudentRepository.new
-
-student = repo.find(1)
-
-student.id # =>  1
-student.name # =>  'David'
-student.cohort_name # =>  'April 2022'
-
-# Add more examples for each method
-```
 
 Encode this example as a test.
 
@@ -184,9 +146,9 @@ This is so you get a fresh table contents every time you run the test suite.
 
 # file: spec/student_repository_spec.rb
 
-def reset_students_table
-  seed_sql = File.read('spec/seeds_students.sql')
-  connection = PG.connect({ host: '127.0.0.1', dbname: 'students' })
+def reset_albums_table
+  seed_sql = File.read('spec/seeds_albums.sql')
+  connection = PG.connect({ host: '127.0.0.1', dbname: 'albums' })
   connection.exec(seed_sql)
 end
 
